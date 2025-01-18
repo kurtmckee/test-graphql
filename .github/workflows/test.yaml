@@ -27,6 +27,33 @@ jobs:
             --raw-field "ref=refs/heads/release/${{ inputs.version }}" \
             --raw-field "sha=$GITHUB_SHA"
 
-#      - name: "Checkout the current repo"
-#        uses: "actions/checkout@v5"
-#
+      - name: "Checkout the current repo"
+        uses: "actions/checkout@v4"
+
+      - name: "Create a new commit (hard-coded)"
+        run: |
+          echo '{
+            "query": "mutation ($input:CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } }}",
+            "variables": {
+              "input": {
+                "branch": {
+                  "branchName": "release/${{ inputs.version }}",
+                  "repositoryNameWithOwner": "kurtmckee/test-graphql"
+                },
+                "expectedHeadOid": "${{ github.sha }}",
+                "fileChanges": {
+                  "additions": [
+                    {
+                      "contents": "",
+                      "path": "v${{ inputs.version }}"
+                    }
+                  ]
+                },
+                "message": {
+                  "headline": "Test creating a commit"
+                }
+              }
+            }
+          }' > query-body.json
+          
+          gh api graphql --input query-body.json
