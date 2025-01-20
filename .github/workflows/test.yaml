@@ -17,19 +17,14 @@ jobs:
     env:
       GH_TOKEN: "${{ github.token }}"
     steps:
-      - name: "Create a new branch"
+      - name: "Checkout the current repo"
+        uses: "actions/checkout@v4"
+
+      - name: "Create a release branch"
         run: |
           echo "The current SHA is $GITHUB_SHA"
 
-          gh api "/repos/$GITHUB_REPOSITORY/git/refs" \
-            --method POST \
-            --header "Accept: application/vnd.github+json" \
-            --header "X-GitHub-Api-Version: 2022-11-28" \
-            --raw-field "ref=refs/heads/release/${{ inputs.version }}" \
-            --raw-field "sha=$GITHUB_SHA"
-
-      - name: "Checkout the current repo"
-        uses: "actions/checkout@v4"
+          git push origin "HEAD:release/${{ inputs.version }}"
 
       - name: "Create a new commit (hard-coded)"
         run: |
