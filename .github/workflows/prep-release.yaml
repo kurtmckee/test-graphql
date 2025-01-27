@@ -1,0 +1,25 @@
+name: "🤖 Prep release"
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The new release version"
+        type: "string"
+        required: true
+
+jobs:
+  updates:
+    name: "Prep release ${{ inputs.version }}"
+
+    permissions:
+      contents: "write"
+      pull-requests: "write"
+
+    strategy:
+      matrix:
+        include:
+          - tox-commit-prep-label: "prep-release"
+
+    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@auto-prs"
+    with:
+      config: "${{ toJSON(matrix) }}"

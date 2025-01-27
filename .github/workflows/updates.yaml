@@ -1,0 +1,20 @@
+name: "✨ Updates"
+on:
+  workflow_dispatch: null
+
+jobs:
+  updates:
+    name: "${{ 'Updates' || matrix.ignore }}"
+
+    permissions:
+      contents: "write"
+      pull-requests: "write"
+
+    strategy:
+      matrix:
+        include:
+          - tox-commit-prep-label: "update"
+
+    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@auto-prs"
+    with:
+      config: "${{ toJSON(matrix) }}"
