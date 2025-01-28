@@ -1,5 +1,10 @@
 on:
   workflow_dispatch: null
+  workflow_run:
+    workflows:
+      - "✨ Updates"
+    types:
+      - completed
   pull_request: null
 
 
@@ -8,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "hello"
+          env
