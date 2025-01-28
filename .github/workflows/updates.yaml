@@ -7,14 +7,16 @@ jobs:
     name: "${{ 'Updates' || matrix.ignore }}"
 
     permissions:
+      actions: "write"
       contents: "write"
       pull-requests: "write"
 
     strategy:
       matrix:
         include:
-          - tox-commit-prep-label: "update"
+          - tox-label-create-changes: "update"
+            run-workflow: "test.yaml"
 
-    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@auto-prs"
+    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@dispatch-after-opening-pr"
     with:
       config: "${{ toJSON(matrix) }}"
