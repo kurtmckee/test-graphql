@@ -21,9 +21,10 @@ jobs:
           - branch-name: "release/$VERSION"
             commit-title: "Update project metadata"
             pr-title: "Release v$VERSION"
+            pr-base: "releases"
             tox-label-create-changes: "prep-release"
 
-    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@dispatch-after-opening-pr"
+    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@main"
     with:
       config: "${{ toJSON(matrix) }}"
       version: "${{ inputs.version }}"
