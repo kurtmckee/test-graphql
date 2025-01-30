@@ -17,6 +17,6 @@ jobs:
           - tox-label-create-changes: "update"
 #            run-workflow: "test.yaml"
 
-    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@dispatch-after-opening-pr"
+    uses: "kurtmckee/github-workflows/.github/workflows/create-pr.yaml@open-draft-prs"
     with:
       config: "${{ toJSON(matrix) }}"
